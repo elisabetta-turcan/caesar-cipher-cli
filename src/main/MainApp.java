@@ -3,12 +3,9 @@ package main;
 import main.config.Modes;
 import main.exception.InvalidKeyException;
 import main.exception.InvalidMenuChoiceException;
-import main.exception.InvalidPathException;
 import main.model.BruteForceResult;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Scanner;
 
 import static main.service.BruteForceService.bruteForce;
@@ -16,7 +13,8 @@ import static main.service.CipherService.cipher;
 import static main.service.FileService.readFile;
 import static main.service.FileService.writeFile;
 import static main.util.ConsoleHelper.*;
-import static main.validator.InputValidator.validateInputFile;
+import static main.validator.InputValidator.validateInputPath;
+import static main.validator.InputValidator.validateOutputPath;
 
 public class MainApp {
     public static void main(String[] args) {
@@ -83,24 +81,19 @@ public class MainApp {
 
     private static String processInput(Scanner s) {
         String inputPath = s.nextLine();
-        Path path = Paths.get(inputPath);
-        validateInputFile(path);
-        return readFile(inputPath);
+        Path path = validateInputPath(inputPath);
+
+        try {
+            return readFile(path.toString());
+        } catch (main.exception.FileReadException e) {
+            throw new main.exception.FileProcessingException();
+        }
     }
 
     private static String processOutputPath(Scanner s) {
         String outputPath = s.nextLine();
-        Path path = Paths.get(outputPath);
-
-        if (Files.exists(path) && Files.isDirectory(path)) {
-            return outputPath;
-        }
-
-        if (outputPath.endsWith(".txt")) {
-            return outputPath;
-        }
-
-        else throw new InvalidPathException();
+        Path path = validateOutputPath(outputPath);
+        return path.toString();
     }
 
     // нет валидации на размер ключа -> нормализация встроена в логику шифра
