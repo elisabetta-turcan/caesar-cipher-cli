@@ -1,9 +1,9 @@
-package main.service;
+package service;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static main.config.Alphabet.ALPHABET;
+import static config.Alphabet.ALPHABET;
 
 public class CipherService {
 

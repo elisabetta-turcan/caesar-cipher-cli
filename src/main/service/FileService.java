@@ -1,7 +1,7 @@
-package main.service;
+package service;
 
-import main.exception.FileReadException;
-import main.exception.FileWriteException;
+import exception.FileReadException;
+import exception.FileWriteException;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

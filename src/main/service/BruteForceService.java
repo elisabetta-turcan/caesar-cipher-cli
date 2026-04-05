@@ -1,10 +1,10 @@
-package main.service;
+package service;
 
-import main.model.BruteForceResult;
+import model.BruteForceResult;
 
-import static main.config.Alphabet.ALPHABET;
-import static main.config.ScoringRules.PATTERNS;
-import static main.service.CipherService.cipher;
+import static config.Alphabet.ALPHABET;
+import static config.ScoringRules.PATTERNS;
+import static service.CipherService.cipher;
 
 public class BruteForceService {
 

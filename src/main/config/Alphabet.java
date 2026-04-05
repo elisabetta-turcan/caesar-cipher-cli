@@ -1,4 +1,4 @@
-package main.config;
+package config;
 
 public class Alphabet {
 

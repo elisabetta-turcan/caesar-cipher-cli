@@ -1,7 +1,11 @@
-package main.validator;
+package validator;
 
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.regex.Pattern;
+
+import static config.Forbidden.FORBIDDEN_DIR_FILES;
 
 public class InputValidator {
 
@@ -9,19 +13,19 @@ public class InputValidator {
         Path path = parsePath(inputPath);
 
         if (!Files.exists(path)) {
-            throw new main.exception.FileNotFoundException();
+            throw new exception.FileNotFoundException();
         }
 
         if (!Files.isRegularFile(path)) {
-            throw new main.exception.InvalidPathException();
+            throw new exception.InvalidPathException();
         }
 
         if (Files.isDirectory(path)) {
-            throw new main.exception.FileIsDirectoryException();
+            throw new exception.FileIsDirectoryException();
         }
 
         if (!Files.isReadable(path)) {
-            throw new main.exception.FileProcessingException();
+            throw new exception.FileProcessingException();
         }
 
         return path;
@@ -39,27 +43,28 @@ public class InputValidator {
         }
 
         if (!Files.isWritable(path)) {
-            throw new main.exception.FileWiteException();
+            throw new exception.FileWriteException();
         }
 
-        throw new main.exception.InvalidPathException();
+        throw new exception.InvalidPathException();
     }
 
     private static Path parsePath(String pathString) {
-        try {
-            return Path.of(pathString);
-        } catch (java.nio.file.InvalidPathException e) {
-            throw new main.exception.InvalidPathException();
-        }
-
         String stringSeparator = Pattern.quote(FileSystems.getDefault().getSeparator());
-        for (String str : filename.split(stringSeparator)) {
+        for (String str : pathString.split(stringSeparator)) {
             if (FORBIDDEN_DIR_FILES.contains(str)) {
-                throw new main.exception.ForbiddenPathException();
+                throw new exception.ForbiddenPathException();
             }
         }
 
-    private InputValidator() {
+        try {
+            return Path.of(pathString);
+        } catch (java.nio.file.InvalidPathException e) {
+            throw new exception.InvalidPathException();
         }
+    }
+
+    private InputValidator() {
+
     }
 }

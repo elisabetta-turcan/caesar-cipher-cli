@@ -1,20 +1,18 @@
-package main;
-
-import main.config.Modes;
-import main.exception.InvalidKeyException;
-import main.exception.InvalidMenuChoiceException;
-import main.model.BruteForceResult;
+import config.Modes;
+import exception.InvalidKeyException;
+import exception.InvalidMenuChoiceException;
+import model.BruteForceResult;
 
 import java.nio.file.Path;
 import java.util.Scanner;
 
-import static main.service.BruteForceService.bruteForce;
-import static main.service.CipherService.cipher;
-import static main.service.FileService.readFile;
-import static main.service.FileService.writeFile;
-import static main.util.ConsoleHelper.*;
-import static main.validator.InputValidator.validateInputPath;
-import static main.validator.InputValidator.validateOutputPath;
+import static service.BruteForceService.bruteForce;
+import static service.CipherService.cipher;
+import static service.FileService.readFile;
+import static service.FileService.writeFile;
+import static util.ConsoleHelper.*;
+import static validator.InputValidator.validateInputPath;
+import static validator.InputValidator.validateOutputPath;
 
 public class MainApp {
     public static void main(String[] args) {
@@ -85,8 +83,8 @@ public class MainApp {
 
         try {
             return readFile(path.toString());
-        } catch (main.exception.FileReadException e) {
-            throw new main.exception.FileProcessingException();
+        } catch (exception.FileReadException e) {
+            throw new exception.FileProcessingException();
         }
     }
 

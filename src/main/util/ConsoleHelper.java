@@ -1,4 +1,4 @@
-package main.util;
+package util;
 
 public class ConsoleHelper {
     public static void printMenu() {
@@ -51,7 +51,7 @@ public class ConsoleHelper {
     public static void printError(String message) {
         System.out.println("""
                 (╥﹏╥)
-                Ошибка:\n""" + message);
+                Ошибка: """ + message);
     }
 
     public static void printGoodbye() {

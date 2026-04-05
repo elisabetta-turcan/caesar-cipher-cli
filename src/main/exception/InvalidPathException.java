@@ -1,4 +1,4 @@
-package main.exception;
+package exception;
 
 public class InvalidPathException extends RuntimeException {
     private static final String ERROR_MESSAGE = "Некорректно указан путь к файлу";

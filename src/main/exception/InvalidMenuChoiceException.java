@@ -1,4 +1,4 @@
-package main.exception;
+package exception;
 
 public class InvalidMenuChoiceException extends RuntimeException {
     private static final String ERROR_MESSAGE = "Пункт отсутствует в меню";

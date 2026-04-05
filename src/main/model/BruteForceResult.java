@@ -1,4 +1,4 @@
-package main.model;
+package model;
 
 public class BruteForceResult {
     private final String text;

@@ -1,4 +1,4 @@
-package main.exception;
+package exception;
 
 public class FileIsDirectoryException extends RuntimeException {
     private static final String ERROR_MESSAGE = "Указан путь к папке, а не файлу";

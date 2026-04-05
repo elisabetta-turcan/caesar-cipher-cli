@@ -1,8 +1,10 @@
-package main.config;
+package config;
+
+import java.util.List;
 
 public class Forbidden {
 
-    private static final List<String> FORBIDDEN_DIR_FILES = List.of(
+    public static final List<String> FORBIDDEN_DIR_FILES = List.of(
             ".bash_history",
             ".bash_profile",
             ".bashrc",
