@@ -16,16 +16,16 @@ public class InputValidator {
             throw new exception.FileNotFoundException();
         }
 
-        if (!Files.isRegularFile(path)) {
-            throw new exception.InvalidPathException();
-        }
-
         if (Files.isDirectory(path)) {
             throw new exception.FileIsDirectoryException();
         }
 
-        if (!Files.isReadable(path)) {
+        if (!Files.isRegularFile(path)) {
             throw new exception.FileProcessingException();
+        }
+
+        if (!Files.isReadable(path)) {
+            throw new exception.FileReadException();
         }
 
         return path;
@@ -34,37 +34,54 @@ public class InputValidator {
     public static Path validateOutputPath(String outputPath) {
         Path path = parsePath(outputPath);
 
-        if (Files.exists(path) && Files.isDirectory(path)) {
+        if (Files.exists(path)) {
+            if (Files.isDirectory(path)) {
+                return path;
+            }
+
+            if (!Files.isRegularFile(path)) {
+                throw new exception.InvalidPathException();
+            }
+
+            if (!Files.isWritable(path)) {
+                throw new exception.FileWriteException();
+            }
+
             return path;
         }
 
-        if (outputPath.endsWith(".txt")) {
-            return path;
+        Path parent = path.getParent();
+
+        if (parent == null || !Files.exists(parent) || !Files.isDirectory(parent)) {
+            throw new exception.InvalidPathException();
         }
 
-        if (!Files.isWritable(path)) {
+        if (!Files.isWritable(parent)) {
             throw new exception.FileWriteException();
         }
 
-        throw new exception.InvalidPathException();
+        return path;
     }
 
     private static Path parsePath(String pathString) {
+        Path path;
+
+        try {
+            path = Path.of(pathString);
+        } catch (java.nio.file.InvalidPathException e) {
+            throw new exception.InvalidPathException();
+        }
+
         String stringSeparator = Pattern.quote(FileSystems.getDefault().getSeparator());
-        for (String str : pathString.split(stringSeparator)) {
-            if (FORBIDDEN_DIR_FILES.contains(str)) {
+        for (String part : pathString.split(stringSeparator)) {
+            if (FORBIDDEN_DIR_FILES.contains(part)) {
                 throw new exception.ForbiddenPathException();
             }
         }
 
-        try {
-            return Path.of(pathString);
-        } catch (java.nio.file.InvalidPathException e) {
-            throw new exception.InvalidPathException();
-        }
+        return path;
     }
 
     private InputValidator() {
-
     }
 }
