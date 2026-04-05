@@ -9,11 +9,19 @@ public class InputValidator {
         Path path = parsePath(inputPath);
 
         if (!Files.exists(path)) {
-            throw new main.exception.InvalidPathException();
+            throw new main.exception.FileNotFoundException();
         }
 
         if (!Files.isRegularFile(path)) {
             throw new main.exception.InvalidPathException();
+        }
+
+        if (Files.isDirectory(path)) {
+            throw new main.exception.FileIsDirectoryException();
+        }
+
+        if (!Files.isReadable(path)) {
+            throw new main.exception.FileProcessingException();
         }
 
         return path;
@@ -30,6 +38,10 @@ public class InputValidator {
             return path;
         }
 
+        if (!Files.isWritable(path)) {
+            throw new main.exception.FileWiteException();
+        }
+
         throw new main.exception.InvalidPathException();
     }
 
@@ -39,8 +51,15 @@ public class InputValidator {
         } catch (java.nio.file.InvalidPathException e) {
             throw new main.exception.InvalidPathException();
         }
-    }
+
+        String stringSeparator = Pattern.quote(FileSystems.getDefault().getSeparator());
+        for (String str : filename.split(stringSeparator)) {
+            if (FORBIDDEN_DIR_FILES.contains(str)) {
+                throw new main.exception.ForbiddenPathException();
+            }
+        }
 
     private InputValidator() {
+        }
     }
 }
